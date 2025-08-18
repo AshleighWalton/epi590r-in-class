@@ -80,4 +80,38 @@ tbl_summary(
   # replace the column headers and make them bold
   modify_header(label = "**Variable**", p.value = "**P**")
 
+#####In-class exercise
 
+#Excercise step 3
+#Make a tbl_summary(). Include categorical region, race/ethnicity, income, and the sleep variables (use a helper function to select those) and make sure they are nicely labeled.
+tbl_summary(
+	nlsy,
+	include = c(
+		starts_with("sleep)",
+		race_eth_cat, region_cat, income
+		),
+		label = list(
+			race_eth_cat ~ "Race/ethnicity",
+			region_cat ~ "Region",
+			income ~ "Income",
+			sleep_wkdy ~ "Sleep on weekdays",
+			sleep_wknd ~ "Sleep on weekends"
+
+		)
+	)
+)
+
+#Exercise step 4
+#Stratify the table by sex. Add a p-value comparing the sexes and an overall column combining both sexes.
+tbl_summary(
+	nlsy,
+	by = sex_cat,
+	include = c(race_eth_cat, region_cat, income, sleep_wkdy, sleep_wknd),
+	label = list(
+		race_eth_cat ~ "Race/ethnicity",
+		eyesight_cat ~ "Eyesight",
+		glasses ~ "Wears glasses",
+		age_bir ~ "Age at first birth"))
+|>	add_p(test = list(
+		all_continuous() ~ "t.test",
+		all_categorical() ~ "chisq.test"
