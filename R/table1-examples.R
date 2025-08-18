@@ -146,7 +146,7 @@ tbl_summary(
 								income ~ c(3, 3))
 )
 
-#exercise step 6
+#Exercise step 6
 #Add a footnote to the race/ethnicity variable with a link to the page describing how NLSY classified participants: https://www.nlsinfo.org/content/cohorts/nlsy79/topical-guide/household/race-ethnicity-immigration-data
 tbl_summary(
 	nlsy,
