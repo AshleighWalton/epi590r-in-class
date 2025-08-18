@@ -7,7 +7,7 @@ nlsy_cols <- c(
   "id", "nsibs", "samp", "race_eth", "sex", "region",
   "income", "res_1980", "res_2002", "age_bir"
 )
-nlsy <- read_csv(here::here("data", "raw", "nlsy.csv"),
+nlsy <- read_csv(here::here("data", "raw", "nlsy.txt"),
   na = c("-1", "-2", "-3", "-4", "-5", "-998"),
   skip = 1, col_names = nlsy_cols
 ) |>
@@ -132,3 +132,63 @@ tbl_merge(list(tbl_no_int, tbl_int),
 )
 
 
+####In-class exercise
+
+#exercise step 3
+#Create a univariate regression table looking at the association between sex (sex_cat) as the x = variable and each of nsibs, sleep_wkdy, and sleep_wknd, and income.
+tbl_uvregression(
+	nlsy,
+	x = sex_cat,
+	include = c(nsibs, sleep_wkdy, sleep_wknd, income),
+	method = lm
+)
+
+#exercise step 4
+#Fit a Poisson regression (family = poisson()) for the number of siblings, using at least 3 predictors of your choice. Create a nice table displaying your Poisson regression and its exponentiated coefficients.
+poisson_model <- glm(nsibs ~ eyesight_cat + sex_cat + income,
+											data = nlsy, family = poisson()
+											)
+tbl_regression(poisson_model,
+							 exponentiate = TRUE,
+							 label = list(sex_cat ~ "Sex",
+							 						 eyesight_cat ~ "Eyesight",
+							 						 income ~ "Income")
+												)
+#exercise step 5
+#Instead of odds ratios for wearing glasses, as in the example in the slides., we want risk ratios. We can do this by specifying in the regression family = binomial(link = "log"). Regress glasses on eyesight_cat and sex_cat and create a table showing the risk ratios and confidence intervals from this regression.
+log_model <- glm(glasses ~ eyesight_cat + sex_cat,
+								 data = nlsy, family = binomial(link = "log")
+)
+
+tbl_regression(
+	log_model,
+	exponentiate = TRUE,
+	label = list(
+		sex_cat ~ "Sex",
+		eyesight_cat ~ "Eyesight"
+	)
+)
+
+#exercise step 6
+#Make a table comparing the logistic and the log-binomial results.
+logistic_table <- tbl_regression(
+	logistic_model,
+	exponentiate = TRUE,
+	label = list(
+		sex_cat ~ "Sex",
+		eyesight_cat ~ "Eyesight"
+	)
+)
+
+log_table <- tbl_regression(
+	log_model,
+	exponentiate = TRUE,
+	label = list(
+		sex_cat ~ "Sex",
+		eyesight_cat ~ "Eyesight"
+	)
+)
+
+tbl_merge(list(logistic_table, log_table),
+					tab_spanner = c("**Logistic regression**", "**Log-linear regression**")
+)
