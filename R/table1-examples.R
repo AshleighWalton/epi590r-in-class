@@ -87,7 +87,7 @@ tbl_summary(
 tbl_summary(
 	nlsy,
 	include = c(
-		starts_with("sleep)",
+		starts_with("sleep"),
 		race_eth_cat, region_cat, income
 		),
 		label = list(
@@ -99,19 +99,27 @@ tbl_summary(
 
 		)
 	)
-)
 
 #Exercise step 4
 #Stratify the table by sex. Add a p-value comparing the sexes and an overall column combining both sexes.
+
+#stratify by sex
 tbl_summary(
 	nlsy,
 	by = sex_cat,
 	include = c(race_eth_cat, region_cat, income, sleep_wkdy, sleep_wknd),
 	label = list(
 		race_eth_cat ~ "Race/ethnicity",
-		eyesight_cat ~ "Eyesight",
-		glasses ~ "Wears glasses",
-		age_bir ~ "Age at first birth"))
-|>	add_p(test = list(
-		all_continuous() ~ "t.test",
-		all_categorical() ~ "chisq.test"
+		region_cat ~ "Region",
+		income ~ "Income",
+		sleep_wkdy ~ "Sleep on weekdays",
+		sleep_wknd ~ "Sleep on weekends"
+	))|>
+	#change the test used to compare sex groups
+	add_p(test = list(
+	all_continuous() ~ "t.test",
+	all_categorical() ~ "chisq.test"
+	)) |>
+	#add a total column with the number of observations
+	add_overall(col_label = "**Overall** N = {N}") |>
+		bold_labels()
