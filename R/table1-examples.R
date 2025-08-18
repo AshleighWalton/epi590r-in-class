@@ -82,7 +82,7 @@ tbl_summary(
 
 #####In-class exercise
 
-#Excercise step 3
+#Exercise step 3
 #Make a tbl_summary(). Include categorical region, race/ethnicity, income, and the sleep variables (use a helper function to select those) and make sure they are nicely labeled.
 tbl_summary(
 	nlsy,
