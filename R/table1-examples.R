@@ -1,3 +1,6 @@
+# install packages
+install.packages("gtsummary", dependencies = TRUE)
+
 library(tidyverse)
 library(gtsummary)
 
@@ -7,7 +10,7 @@ nlsy_cols <- c(
   "id", "nsibs", "samp", "race_eth", "sex", "region",
   "income", "res_1980", "res_2002", "age_bir"
 )
-nlsy <- read_csv(here::here("data", "raw", "nlsy.csv"),
+nlsy <- read_csv(here::here("data", "raw", "nlsy.txt"),
   na = c("-1", "-2", "-3", "-4", "-5", "-998"),
   skip = 1, col_names = nlsy_cols
 ) |>
