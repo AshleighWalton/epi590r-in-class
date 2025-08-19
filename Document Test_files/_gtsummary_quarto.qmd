@@ -25,6 +25,7 @@ nlsy <- read_csv(here::here("data", "raw", "nlsy.txt"),
          glasses_cat = factor(glasses, labels = c("No", "Yes"))) 
 ```
 
+Exercise Part 1
 
 ```{r}
 #| label: tbl-sex
@@ -42,13 +43,53 @@ Descriptive statisitcs from the NLSY79 Cohort (@tbl-sex)
 ```{r}
 mean_sleep_wknd <- mean(nlsy$sleep_wknd, na.rm = TRUE)
 ```
-Participates slept an average of `r mean_sleep_wknd` hours on the weekend (mean).
+Participates slept an average of `r mean_sleep_wknd` hours on the weekend.
 
 ```{r}
 median_sleep_wknd <-median(nlsy$sleep_wknd, na.rm = TRUE)
 ```
 
-Participates slept an average of `r median_sleep_wknd` hours on the weekend (median).
+The median hours of sleep on weekends was `r median_sleep_wknd`.
+
+Exercise Part 2
+
+```{r}
+#| label: tbl-descr
+#| tbl-cap: "Descriptive statistics"
+#| output-location: slide
+table1 <- tbl_summary(
+  nlsy,
+  by = sex_cat,
+  include = c(sex_cat, race_eth_cat, region_cat,
+              eyesight_cat, glasses, age_bir)) |> 
+  add_overall(last = TRUE)
+table1
+```
+
+```{r}
+female_age_bir <- inline_text(table1, variable = "age_bir", column = "stat_2")
+```
+
+The median (IQR) age of the female participants at the birth of their first child was `r female_age_bir`.
+
+```{r}
+#| label: tbl-sex-sleep
+#| tbl-cap: "Descriptive statistics by sex with sleep"
+
+table_sex_sleep <- tbl_summary(
+  nlsy,
+  by = sex_cat,
+  include = c(sleep_wknd),
+  label = list(
+  	sleep_wknd ~ "Sleep on Weekend")
+  )|> 
+  add_overall(last = TRUE)
+
+table_sex_sleep
+
+overall_sex_sleep <- inline_text(table_sex_sleep, variable = "sleep_wknd", column = "stat_0")
+```
+The median (IQR) hours of sleep on weekend in all participants was `r overall_sex_sleep`.
 
 ```{r}
 tbl_summary(
