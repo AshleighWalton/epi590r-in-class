@@ -192,3 +192,12 @@ log_table <- tbl_regression(
 tbl_merge(list(logistic_table, log_table),
 					tab_spanner = c("**Logistic regression**", "**Log-linear regression**")
 )
+
+#EXPLORATION
+library(flextable)
+flextable(nlsy)
+set_flextable_defaults(
+	font.size = 10, theme_fun = theme_vanilla,
+	padding = 6,
+	background.color = "#EFEFEF")
+flextable(nlsy)
