@@ -3,7 +3,7 @@ title: "gtsummary in quarto"
 format: html
 execute: 
   echo: false
-theme: yeti
+theme: quartz
 ---
 The NLSY79 Cohort is a longitudinal project that follows the lives of a sample of American youth born between 1957-1964. The cohort originally included 12,686 respondents ages 14-22 when first interviewed in 1979; after two subsamples were dropped, 9,964 respondents remain in the eligible samples. Data are now available from Round 1 (1979 survey year) to Round 30 (2022 survey year).
 
@@ -25,15 +25,30 @@ nlsy <- read_csv(here::here("data", "raw", "nlsy.txt"),
          glasses_cat = factor(glasses, labels = c("No", "Yes"))) 
 ```
 
-# Customization of `tbl_summary()`
 
 ```{r}
+#| label: tbl-sex
+#| tbl-cap: "Descriptive Statistics"
+
 tbl_summary(
   nlsy,
   by = sex_cat,
   include = c(sex_cat, race_eth_cat, region_cat,
               eyesight_cat, glasses, age_bir))
 ```
+
+Descriptive statisitcs from the NLSY79 Cohort (@tbl-sex)
+
+```{r}
+mean_sleep_wknd <- mean(nlsy$sleep_wknd, na.rm = TRUE)
+```
+Participates slept an average of `r mean_sleep_wknd` hours on the weekend (mean).
+
+```{r}
+median_sleep_wknd <-median(nlsy$sleep_wknd, na.rm = TRUE)
+```
+
+Participates slept an average of `r median_sleep_wknd` hours on the weekend (median).
 
 ```{r}
 tbl_summary(
